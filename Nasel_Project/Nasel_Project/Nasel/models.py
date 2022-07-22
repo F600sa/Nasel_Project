@@ -13,5 +13,15 @@ class CommentModel (models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
+# class Order (models.Model):
+
+
+class Animal (models.Model):
+    name = models.CharField(max_length=200)
+    age = models.IntegerField()
+    photo = models.URLField()
+    father = models.CharField(max_length=200)
+    mother = models.CharField(max_length=200)
+    family= models.CharField(max_length=200)
 
 
