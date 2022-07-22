@@ -7,3 +7,8 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = ProfileModel
         fields = '__all__'
 
+
+class CommentSerializer(serializers.ModelSerializer):
+    class meta:
+        model = CommentModel
+        fields = '__all__'
