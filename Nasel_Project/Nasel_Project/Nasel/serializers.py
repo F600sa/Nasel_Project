@@ -13,7 +13,7 @@ class CommentSerializer(serializers.ModelSerializer):
         model = CommentModel
         fields = '__all__'
 
-class AnimapSerializer(serializers.ModelSerializer):
+class AnimalSerializer(serializers.ModelSerializer):
     class Meta:
         model = Animal
         fields = '__all__'
