@@ -35,9 +35,7 @@ def add_profile(request: Request):
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])
 def update_profile(request: Request, profile_id):
-    '''
-    can only update Admin and Developer
-    '''
+   
     if not request.user.is_authenticated :
         return Response("Not Allowed", status=status.HTTP_400_BAD_REQUEST)
     request.data["user"] = request.user.id
@@ -180,7 +178,7 @@ def list_Animal(request: Request):
     animal = AnimalModel.objects.all()
     dataResponse = {
         "msg": "List of All animal",
-        "comment": AnimalSerializer(instance=animal, many=True).data
+        "Animal": AnimalSerializer(instance=animal, many=True).data
     }
     return Response(dataResponse)
 
@@ -249,7 +247,7 @@ def update_Order(request: Request, Order_id):
 def list_Order(request: Request):
     order = OrderModel.objects.all()
     dataResponse = {
-        "msg": "List of All animal",
+        "msg": "List of All order",
         "order": OrderSerializer(instance=order, many=True).data
     }
     return Response(dataResponse)
