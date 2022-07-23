@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import ProfileModel, CommentModel,Animal
+from .models import ProfileModel, CommentModel,AnimalModel,OrderModel
 
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
@@ -15,5 +15,10 @@ class CommentSerializer(serializers.ModelSerializer):
 
 class AnimalSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Animal
+        model = AnimalModel
+        fields = '__all__'
+
+class OrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OrderModel
         fields = '__all__'

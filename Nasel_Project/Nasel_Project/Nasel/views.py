@@ -5,8 +5,8 @@ from rest_framework.decorators import api_view, authentication_classes, permissi
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
-from .serializers import ProfileSerializer, CommentSerializer,AnimalSerializer
-from .models import ProfileModel,CommentModel,Animal
+from .serializers import ProfileSerializer, CommentSerializer,AnimalSerializer,OrderSerializer
+from .models import ProfileModel,CommentModel,AnimalModel,OrderModel
 
 
 @api_view(['POST'])
@@ -106,6 +106,30 @@ def delete_comment(request: Request, comment_id):
     return Response({"msg": "Deleted Successfully"})
 
 
+
+@api_view(['PUT'])
+@authentication_classes([JWTAuthentication])
+def update_comment(request: Request, comment_id):
+
+    if not request.user.is_authenticated :
+        return Response("Not Allowed", status=status.HTTP_400_BAD_REQUEST)
+    request.data["user"] = request.user.id
+    comment = CommentModel.objects.get(id=comment_id)
+    updated_comment = AnimalSerializer(instance=comment, data=request.data)
+    if updated_comment.is_valid():
+        updated_comment.save()
+        responseData = {
+            "msg": "updated successefully"
+        }
+
+        return Response(responseData)
+    else:
+        print(updated_comment.errors)
+        return Response({"msg": "bad request, cannot update"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
 @api_view(['POST'])
 @authentication_classes([JWTAuthentication])
 def add_comment(request: Request):
@@ -146,19 +170,20 @@ def delete_Animal(request: Request, Animal_id):
     if not request.user.is_authenticated:
         return Response({"msg": "Not Allowed"}, status=status.HTTP_401_UNAUTHORIZED)
     request.data["user"] = request.user.id
-    animal = Animal.objects.get(id=Animal_id)
+    animal = AnimalModel.objects.get(id=Animal_id)
     animal.delete()
     return Response({"msg": "Deleted Successfully"})
 
 @api_view(['GET'])
 @authentication_classes([JWTAuthentication])
 def list_Animal(request: Request):
-    animal = Animal.objects.all()
+    animal = AnimalModel.objects.all()
     dataResponse = {
         "msg": "List of All animal",
         "comment": AnimalSerializer(instance=animal, many=True).data
     }
     return Response(dataResponse)
+
 
 
 @api_view(['PUT'])
@@ -168,7 +193,7 @@ def update_Animal(request: Request, Animal_id):
     if not request.user.is_authenticated :
         return Response("Not Allowed", status=status.HTTP_400_BAD_REQUEST)
     request.data["user"] = request.user.id
-    animal = Animal.objects.get(id=Animal_id)
+    animal = AnimalModel.objects.get(id=Animal_id)
     updated_animal = AnimalSerializer(instance=animal, data=request.data)
     if updated_animal.is_valid():
         updated_animal.save()
@@ -182,3 +207,61 @@ def update_Animal(request: Request, Animal_id):
         return Response({"msg": "bad request, cannot update"}, status=status.HTTP_400_BAD_REQUEST)
 
 
+
+@api_view(['POST'])
+@authentication_classes([JWTAuthentication])
+def add_Order(request: Request):
+
+    if not request.user.is_authenticated:
+        return Response("Not Allowed", status=status.HTTP_400_BAD_REQUEST)
+    request.data["user"] = request.user.id
+    new_Order = OrderSerializer(data=request.data)
+    if new_Order.is_valid():
+        new_Order.save()
+        return Response({"Animal": new_Order.data})
+    else:
+        print(new_Order.errors)
+    return Response("no", status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['PUT'])
+@authentication_classes([JWTAuthentication])
+def update_Order(request: Request, Order_id):
+
+    if not request.user.is_authenticated :
+        return Response("Not Allowed", status=status.HTTP_400_BAD_REQUEST)
+    request.data["user"] = request.user.id
+    Order = OrderModel.objects.get(id=Order_id)
+    updated_order = OrderSerializer(instance=Order, data=request.data)
+    if updated_order.is_valid():
+        updated_order.save()
+        responseData = {
+            "msg": "updated successefully"
+        }
+
+        return Response(responseData)
+    else:
+        print(updated_order.errors)
+        return Response({"msg": "bad request, cannot update"}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+@authentication_classes([JWTAuthentication])
+def list_Order(request: Request):
+    order = OrderModel.objects.all()
+    dataResponse = {
+        "msg": "List of All animal",
+        "order": OrderSerializer(instance=order, many=True).data
+    }
+    return Response(dataResponse)
+
+
+@api_view(['DELETE'])
+@authentication_classes([JWTAuthentication])
+def delete_Order(request: Request, Order_id):
+
+    if not request.user.is_authenticated:
+        return Response({"msg": "Not Allowed"}, status=status.HTTP_401_UNAUTHORIZED)
+    request.data["user"] = request.user.id
+    order = OrderModel.objects.get(id=Order_id)
+    order.delete()
+    return Response({"msg": "Deleted Successfully"})
