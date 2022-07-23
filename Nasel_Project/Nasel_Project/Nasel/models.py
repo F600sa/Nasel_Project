@@ -17,6 +17,7 @@ class CommentModel (models.Model):
 
 
 
+
 class AnimalModel (models.Model):
     photo = models.URLField()
     name = models.CharField(max_length=200)
@@ -24,6 +25,7 @@ class AnimalModel (models.Model):
     father = models.CharField(max_length=200)
     mother = models.CharField(max_length=200)
     family= models.CharField(max_length=200)
+    awards = models.CharField(max_length=200)
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
 
 
@@ -31,5 +33,10 @@ class OrderModel (models.Model):
     Animal = models.ForeignKey(AnimalModel, on_delete=models.DO_NOTHING)
     date = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+
+class Review (models.Model):
+    rating = models.DecimalField(max_digits = 3 ,decimal_places = 1)
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+
 
 
