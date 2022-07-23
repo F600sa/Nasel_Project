@@ -35,7 +35,7 @@ def add_profile(request: Request):
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])
 def update_profile(request: Request, profile_id):
-   
+
     if not request.user.is_authenticated :
         return Response("Not Allowed", status=status.HTTP_400_BAD_REQUEST)
     request.data["user"] = request.user.id
