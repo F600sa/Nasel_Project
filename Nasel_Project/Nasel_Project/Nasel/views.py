@@ -310,3 +310,6 @@ def test_delete_profile(request: Request, slug):
     else:
         data['faild']="Deleted failed"
     return Response(data=data)
+
+
+
