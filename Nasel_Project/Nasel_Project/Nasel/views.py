@@ -13,17 +13,24 @@ from .models import ProfileModel,CommentModel,AnimalModel,OrderModel
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])
 def add_profile(request: Request):
-
+    '''
+    can only add Admin and Developer
+    '''
     if not request.user.is_authenticated or not request.user.has_perm('Nasel.add_profilemodel'):
-        return Response("Not Allowed", status=status.HTTP_400_BAD_REQUEST)
+        return Response({"msg": "Sorry, Not Allowed "}, status=status.HTTP_401_UNAUTHORIZED)
     request.data["user"] = request.user.id
-    new_profile = ProfileSerializer(data=request.data)
-    if new_profile.is_valid():
-        new_profile.save()
-        return Response({"Product": new_profile.data})
+    NewProfile = ProfileSerializer(data=request.data)
+    if NewProfile.is_valid():
+        NewProfile.save()
+        dataResponse = {
+            "msg": "Thank you for record this Profile...",
+            "Certification ": NewProfile.data
+        }
+        return Response(dataResponse)
     else:
-        print(new_profile.errors)
-    return Response("no", status=status.HTTP_400_BAD_REQUEST)
+        print(NewProfile.errors)
+        dataResponse = {"msg": "Sorry, couldn't add new Profile"}
+        return Response(dataResponse, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['PUT'])
 @authentication_classes([JWTAuthentication])
@@ -214,7 +221,7 @@ def add_Order(request: Request):
     new_Order = OrderSerializer(data=request.data)
     if new_Order.is_valid():
         new_Order.save()
-        return Response({"Animal": new_Order.data})
+        return Response({"Order": new_Order.data})
     else:
         print(new_Order.errors)
     return Response("no", status=status.HTTP_400_BAD_REQUEST)
@@ -261,3 +268,27 @@ def delete_Order(request: Request, Order_id):
     order = OrderModel.objects.get(id=Order_id)
     order.delete()
     return Response({"msg": "Deleted Successfully"})
+
+
+
+@api_view(['PUT'])
+@authentication_classes([JWTAuthentication])
+@permission_classes((IsAuthenticated,))
+def update_profilee(request : Request, slug):
+    '''update profile by creator'''
+    profile = ProfileModel.objects.get(slug=slug)###
+    user=request.user
+    if profile.user != user:
+        return Response({'response':"You Don't Have Permission To Edit That"})
+    request.data["user"] = request.user.id
+    updated_profile = ProfileSerializer(instance=profile, data=request.data)
+    if updated_profile.is_valid():
+        updated_profile.save()
+        responseData = {
+            "msg" : "updated successefully"
+        }
+
+        return Response(responseData)
+    else:
+        print(updated_profile.errors)
+        return Response({"msg" : "bad request, cannot update"}, status=status.HTTP_400_BAD_REQUEST)
