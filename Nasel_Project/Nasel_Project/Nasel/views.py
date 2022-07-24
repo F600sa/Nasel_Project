@@ -11,32 +11,26 @@ from .models import ProfileModel,CommentModel,AnimalModel,OrderModel
 
 @api_view(['POST'])
 @authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 def add_profile(request: Request):
-    '''
-    can only add Admin and Developer
-    '''
-    if not request.user.is_authenticated:
-        return Response({"msg": "Sorry, Not Allowed "}, status=status.HTTP_401_UNAUTHORIZED)
+
+    if not request.user.is_authenticated or not request.user.has_perm('Nasel.add_profilemodel'):
+        return Response("Not Allowed", status=status.HTTP_400_BAD_REQUEST)
     request.data["user"] = request.user.id
-    NewProfile = ProfileSerializer(data=request.data)
-    if NewProfile.is_valid():
-        NewProfile.save()
-        dataResponse = {
-            "msg": "Thank you for record this Profile...",
-            "Certification ": NewProfile.data
-        }
-        return Response(dataResponse)
+    new_profile = ProfileSerializer(data=request.data)
+    if new_profile.is_valid():
+        new_profile.save()
+        return Response({"Product": new_profile.data})
     else:
-        print(NewProfile.errors)
-        dataResponse = {"msg": "Sorry, couldn't add new Profile"}
-        return Response(dataResponse, status=status.HTTP_400_BAD_REQUEST)
+        print(new_profile.errors)
+    return Response("no", status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['PUT'])
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])
 def update_profile(request: Request, profile_id):
 
-    if not request.user.is_authenticated :
+    if not request.user.is_authenticated or not request.user.has_perm('Nasel.delete_profilemodel'):
         return Response("Not Allowed", status=status.HTTP_400_BAD_REQUEST)
     request.data["user"] = request.user.id
     profile = ProfileModel.objects.get(id=profile_id)
@@ -55,16 +49,20 @@ def update_profile(request: Request, profile_id):
 
 @api_view(['DELETE'])
 @authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 def delete_profile(request: Request, profile_id):
     '''
         can only delete Admin and Developer
     '''
-    if not request.user.is_authenticated :
+    if not request.user.is_authenticated or not request.user.has_perm('Nasel.delete_profilemodel'):
         return Response("Not Allowed", status=status.HTTP_400_BAD_REQUEST)
-    request.data["user"] = request.user.id
+        request.data["user"] = request.user.id
     profile = ProfileModel.objects.get(id=profile_id)
     profile.delete()
     return Response({"msg": "Deleted Successfully"})
+
+
+
 
 
 

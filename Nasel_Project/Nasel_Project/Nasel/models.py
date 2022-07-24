@@ -14,10 +14,6 @@ class CommentModel (models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
-
-
-
-
 class AnimalModel (models.Model):
     photo = models.URLField()
     name = models.CharField(max_length=200)
@@ -26,6 +22,7 @@ class AnimalModel (models.Model):
     mother = models.CharField(max_length=200)
     family= models.CharField(max_length=200)
     awards = models.CharField(max_length=200)
+    price=models.IntegerField()
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
 
 
