@@ -7,6 +7,7 @@ class ProfileModel (models.Model):
     image = models.URLField()
     slug = models.SlugField(unique=True)
     user = models.OneToOneField(User,on_delete=models.CASCADE)
+    #نضيف للحيوان علاقه
 
 
 class CommentModel (models.Model):
@@ -31,6 +32,7 @@ class OrderModel (models.Model):
     Animal = models.ForeignKey(AnimalModel, on_delete=models.DO_NOTHING)
     date = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    ##نضيف علاقة مع البائع
 
 class Review (models.Model):
     rating = models.DecimalField(max_digits = 3 ,decimal_places = 1)

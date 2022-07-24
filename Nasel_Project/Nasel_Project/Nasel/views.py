@@ -292,3 +292,21 @@ def update_profilee(request : Request, slug):
     else:
         print(updated_profile.errors)
         return Response({"msg" : "bad request, cannot update"}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['DELETE'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
+def test_delete_profile(request: Request, slug):
+    '''Delete profile by creator'''
+    profile = ProfileModel.objects.get(slug=slug)
+    user=request.user
+    if profile.user != user:
+        return Response({'response':"You Don't Have Permission To Delete That"})
+    if request.method == 'DELETE':
+       opration= profile.delete()
+       data={}
+    if opration:
+        data['success']="Deleted Successfully"
+    else:
+        data['faild']="Deleted failed"
+    return Response(data=data)

@@ -20,7 +20,7 @@ def register_user(request: Request):
         return Response({"msg": "created user successfuly"})
     else:
         print(user_serializer.errors)
-        return Response({"msg": "Couldn't create suer"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"msg": "Couldn't create user"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])
