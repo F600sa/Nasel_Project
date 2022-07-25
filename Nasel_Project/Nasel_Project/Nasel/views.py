@@ -268,72 +268,8 @@ def delete_Order(request: Request, Order_id):
         return Response({"msg": "Not Allowed"}, status=status.HTTP_401_UNAUTHORIZED)
     order.delete()
     return Response({"msg": "Deleted Successfully"})
-<<<<<<< HEAD
-=======
 
 
 
 
-# @api_view(['PUT'])
-# @authentication_classes([JWTAuthentication])
-# @permission_classes((IsAuthenticated,))
-# def update_profilee(request : Request, slug):
-#     '''update profile by creator'''
-#     profile = ProfileModel.objects.get(slug=slug)###
-#     user=request.user
-#     if profile.user != user:
-#         return Response({'response':"You Don't Have Permission To Edit That"})
-#     request.data["user"] = request.user.id
-#     updated_profile = ProfileSerializer(instance=profile, data=request.data)
-#     if updated_profile.is_valid():
-#         updated_profile.save()
-#         responseData = {
-#             "msg" : "updated successefully"
-#         }
-#
-#         return Response(responseData)
-#     else:
-#         print(updated_profile.errors)
-#         return Response({"msg" : "bad request, cannot update"}, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['PUT'])
-@authentication_classes([JWTAuthentication])
-@permission_classes((IsAuthenticated,))
-def update_profilee(request : Request, slug):
-    '''update profile by creator'''
-    profile = ProfileModel.objects.get(slug=slug)###
-    user=request.user
-    if profile.user != user:
-        return Response({'response':"You Don't Have Permission To Edit That"})
-    request.data["user"] = request.user.id
-    updated_profile = ProfileSerializer(instance=profile, data=request.data)
-    if updated_profile.is_valid():
-        updated_profile.save()
-        responseData = {
-            "msg" : "updated successefully"
-        }
-
-        return Response(responseData)
-    else:
-        print(updated_profile.errors)
-        return Response({"msg" : "bad request, cannot update"}, status=status.HTTP_400_BAD_REQUEST)
-
-@api_view(['DELETE'])
-@authentication_classes([JWTAuthentication])
-@permission_classes([IsAuthenticated])
-def test_delete_profile(request: Request, slug):
-    '''Delete profile by creator'''
-    profile = ProfileModel.objects.get(slug=slug)
-    user=request.user
-    if profile.user != user:
-        return Response({'response':"You Don't Have Permission To Delete That"})
-    if request.method == 'DELETE':
-       opration= profile.delete()
-       data={}
-    if opration:
-        data['success']="Deleted Successfully"
-    else:
-        data['faild']="Deleted failed"
-    return Response(data=data)
-
->>>>>>> 3e190d4c73d2c70f5adbf1f7ddbcd39f58b418d5

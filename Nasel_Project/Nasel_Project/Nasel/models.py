@@ -3,11 +3,6 @@ from django.contrib.auth.models import User
 # Create your models here
 
 
-<<<<<<< HEAD
-
-
-=======
->>>>>>> 3e190d4c73d2c70f5adbf1f7ddbcd39f58b418d5
 
 
 class CommentModel (models.Model):
@@ -30,13 +25,9 @@ class AnimalModel (models.Model):
 class ProfileModel (models.Model):
     name = models.CharField(max_length=200)
     image = models.URLField()
-<<<<<<< HEAD
-=======
     bio = models.TextField()
-    # slug = models.SlugField(unique=True)
->>>>>>> 3e190d4c73d2c70f5adbf1f7ddbcd39f58b418d5
     user = models.OneToOneField(User,on_delete=models.CASCADE)
-    # animal = models.ForeignKey(AnimalModel,on_delete=models.CASCADE)
+    animal = models.ForeignKey(AnimalModel,on_delete=models.CASCADE)
 
 class OrderModel (models.Model):
     Animal = models.ForeignKey(AnimalModel, on_delete=models.CASCADE)
