@@ -3,8 +3,11 @@ from django.contrib.auth.models import User
 # Create your models here
 
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 3e190d4c73d2c70f5adbf1f7ddbcd39f58b418d5
 
 
 class CommentModel (models.Model):
@@ -22,24 +25,29 @@ class AnimalModel (models.Model):
     family= models.CharField(max_length=200)
     awards = models.CharField(max_length=200)
     price=models.IntegerField()
-    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 class ProfileModel (models.Model):
     name = models.CharField(max_length=200)
     image = models.URLField()
+<<<<<<< HEAD
+=======
+    bio = models.TextField()
+    # slug = models.SlugField(unique=True)
+>>>>>>> 3e190d4c73d2c70f5adbf1f7ddbcd39f58b418d5
     user = models.OneToOneField(User,on_delete=models.CASCADE)
-    animal = models.ForeignKey(AnimalModel,on_delete=models.CASCADE)
+    # animal = models.ForeignKey(AnimalModel,on_delete=models.CASCADE)
 
 class OrderModel (models.Model):
-    Animal = models.ForeignKey(AnimalModel, on_delete=models.DO_NOTHING)
+    Animal = models.ForeignKey(AnimalModel, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
-    profile = models.ForeignKey(ProfileModel, on_delete=models.DO_NOTHING)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    profile = models.ForeignKey(ProfileModel, on_delete=models.CASCADE)
 
 
 class Review (models.Model):
     rating = models.DecimalField(max_digits = 3 ,decimal_places = 1)
-    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
 

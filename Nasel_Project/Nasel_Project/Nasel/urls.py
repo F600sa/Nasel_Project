@@ -8,7 +8,7 @@ urlpatterns = [
     path("profile/delete/<profile_id>", views.delete_profile, name="delete_profile"),
     path("profile/update/<profile_id>", views.update_profile, name="update_profile"),
     # CRUD Comment
-    path("add/comment", views.add_comment, name="add_comment"),
+    path("comment/add", views.add_comment, name="add_comment"),
     path("comment/delete/<comment_id>", views.delete_comment, name="delete_comment"),
     path("comment/all", views.list_comment, name="list_comment"),
     path("comment/update/<comment_id>", views.update_comment, name="update_comment"),
@@ -23,6 +23,18 @@ urlpatterns = [
     path("order/all", views.list_Order, name="list_Order"),
     path("order/update/<Order_id>", views.update_Order, name="update_Order"),
     #Test CRUD
+
+<<<<<<< HEAD
+=======
+    # path("profilee/update/<slug>",views.update_profilee,name="update_profilee"),
+    # path("profilee/delete/<slug>",views.test_delete_profile,name="test_delete_profile"),
+    # path('profile-details/<user_id>',views.profile_details,name='profile-details'),
+
+
+    # path("profilee/update/<slug>",views.update_profilee,name="update_profilee"),
+    # path("profilee/delete/<slug>",views.test_delete_profile,name="test_delete_profile")
+
+>>>>>>> 3e190d4c73d2c70f5adbf1f7ddbcd39f58b418d5
 
 
 
