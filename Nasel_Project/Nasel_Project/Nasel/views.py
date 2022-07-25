@@ -37,21 +37,24 @@ def add_profile(request: Request):
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])
 def update_profile(request: Request, profile_id):
-    if not request.user.is_authenticated or not request.user.has_perm('Nasel.change_ProfileModel'):
-        return Response("Not Allowed", status=status.HTTP_401_UNAUTHORIZED)
+    if not request.user.is_authenticated:
+        return Response({"msg": "Not Allowed please LOGIN..."}, status=status.HTTP_401_UNAUTHORIZED)
     request.data["user"] = request.user.id
-    profile = ProfileModel.objects.get(id=profile_id)
-    updated_product = ProfileSerializer(instance=profile, data=request.data)
-    if updated_product.is_valid():
-        updated_product.save()
-        responseData = {
-            "msg": "updated successefully"
-        }
+    newprofile = ProfileModel.objects.get(id=profile_id)
+    updated_profile = ProfileSerializer(instance=newprofile, data=request.data)
+    if request.user.id == newprofile.user.id:
+        if updated_profile.is_valid():
+            updated_profile.save()
+            responseData = {
+                "msg": "updated Delegate successefully"
+            }
 
-        return Response(responseData)
+            return Response(responseData)
+        else:
+            print(updated_profile.errors)
+            return Response({"msg": "bad request, 1111cannot update"}, status=status.HTTP_400_BAD_REQUEST)
     else:
-        print(updated_product.errors)
-        return Response({"msg": "bad request, cannot update"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"msg": "222bad request, cannot update"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['DELETE'])
@@ -110,24 +113,24 @@ def delete_comment(request: Request, comment_id):
 @api_view(['PUT'])
 @authentication_classes([JWTAuthentication])
 def update_comment(request: Request, comment_id):
-
-    if not request.user.is_authenticated :
-        return Response("Not Allowed", status=status.HTTP_400_BAD_REQUEST)
+    if not request.user.is_authenticated:
+        return Response({"msg": "Not Allowed please LOGIN..."}, status=status.HTTP_401_UNAUTHORIZED)
     request.data["user"] = request.user.id
-    comment = CommentModel.objects.get(id=comment_id)
-    updated_comment = AnimalSerializer(instance=comment, data=request.data)
-    if updated_comment.is_valid():
-        updated_comment.save()
-        responseData = {
-            "msg": "updated successefully"
-        }
+    newcomment = ProfileModel.objects.get(id=comment_id)
+    updated_comment = ProfileSerializer(instance=newcomment, data=request.data)
+    if request.user.id == newcomment.user.id:
+        if updated_comment.is_valid():
+            updated_comment.save()
+            responseData = {
+                "msg": "updated Delegate successefully"
+            }
 
-        return Response(responseData)
+            return Response(responseData)
+        else:
+            print(updated_comment.errors)
+            return Response({"msg": "bad request, 1111cannot update"}, status=status.HTTP_400_BAD_REQUEST)
     else:
-        print(updated_comment.errors)
-        return Response({"msg": "bad request, cannot update"}, status=status.HTTP_400_BAD_REQUEST)
-
-
+        return Response({"msg": "222bad request, cannot update"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])
@@ -188,23 +191,24 @@ def list_Animal(request: Request):
 @api_view(['PUT'])
 @authentication_classes([JWTAuthentication])
 def update_Animal(request: Request, Animal_id):
-
-    if not request.user.is_authenticated :
-        return Response("Not Allowed", status=status.HTTP_400_BAD_REQUEST)
+    if not request.user.is_authenticated:
+        return Response({"msg": "Not Allowed please LOGIN..."}, status=status.HTTP_401_UNAUTHORIZED)
     request.data["user"] = request.user.id
-    animal = AnimalModel.objects.get(id=Animal_id)
-    updated_animal = AnimalSerializer(instance=animal, data=request.data)
-    if updated_animal.is_valid():
-        updated_animal.save()
-        responseData = {
-            "msg": "updated successefully"
-        }
+    newanimal = ProfileModel.objects.get(id=Animal_id)
+    updated_animal = ProfileSerializer(instance=newanimal, data=request.data)
+    if request.user.id == newanimal.user.id:
+        if updated_animal.is_valid():
+            updated_animal.save()
+            responseData = {
+                "msg": "updated Delegate successefully"
+            }
 
-        return Response(responseData)
+            return Response(responseData)
+        else:
+            print(updated_animal.errors)
+            return Response({"msg": "bad request, 1111cannot update"}, status=status.HTTP_400_BAD_REQUEST)
     else:
-        print(updated_animal.errors)
-        return Response({"msg": "bad request, cannot update"}, status=status.HTTP_400_BAD_REQUEST)
-
+        return Response({"msg": "222bad request, cannot update"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])
@@ -225,22 +229,24 @@ def add_Order(request: Request):
 @api_view(['PUT'])
 @authentication_classes([JWTAuthentication])
 def update_Order(request: Request, Order_id):
-
-    if not request.user.is_authenticated :
-        return Response("Not Allowed", status=status.HTTP_400_BAD_REQUEST)
+    if not request.user.is_authenticated:
+        return Response({"msg": "Not Allowed please LOGIN..."}, status=status.HTTP_401_UNAUTHORIZED)
     request.data["user"] = request.user.id
-    Order = OrderModel.objects.get(id=Order_id)
-    updated_order = OrderSerializer(instance=Order, data=request.data)
-    if updated_order.is_valid():
-        updated_order.save()
-        responseData = {
-            "msg": "updated successefully"
-        }
+    neworder = ProfileModel.objects.get(id=Order_id)
+    updated_order = ProfileSerializer(instance=neworder, data=request.data)
+    if request.user.id == neworder.user.id:
+        if updated_order.is_valid():
+            updated_order.save()
+            responseData = {
+                "msg": "updated Delegate successefully"
+            }
 
-        return Response(responseData)
+            return Response(responseData)
+        else:
+            print(updated_order.errors)
+            return Response({"msg": "bad request, 1111cannot update"}, status=status.HTTP_400_BAD_REQUEST)
     else:
-        print(updated_order.errors)
-        return Response({"msg": "bad request, cannot update"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"msg": "222bad request, cannot update"}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
 @authentication_classes([JWTAuthentication])
@@ -262,71 +268,3 @@ def delete_Order(request: Request, Order_id):
         return Response({"msg": "Not Allowed"}, status=status.HTTP_401_UNAUTHORIZED)
     order.delete()
     return Response({"msg": "Deleted Successfully"})
-
-
-
-
-# @api_view(['PUT'])
-# @authentication_classes([JWTAuthentication])
-# @permission_classes((IsAuthenticated,))
-# def update_profilee(request : Request, slug):
-#     '''update profile by creator'''
-#     profile = ProfileModel.objects.get(slug=slug)###
-#     user=request.user
-#     if profile.user != user:
-#         return Response({'response':"You Don't Have Permission To Edit That"})
-#     request.data["user"] = request.user.id
-#     updated_profile = ProfileSerializer(instance=profile, data=request.data)
-#     if updated_profile.is_valid():
-#         updated_profile.save()
-#         responseData = {
-#             "msg" : "updated successefully"
-#         }
-#
-#         return Response(responseData)
-#     else:
-#         print(updated_profile.errors)
-#         return Response({"msg" : "bad request, cannot update"}, status=status.HTTP_400_BAD_REQUEST)
-
-@api_view(['PUT'])
-@authentication_classes([JWTAuthentication])
-@permission_classes((IsAuthenticated,))
-def update_profilee(request : Request, slug):
-    '''update profile by creator'''
-    profile = ProfileModel.objects.get(slug=slug)###
-    user=request.user
-    if profile.user != user:
-        return Response({'response':"You Don't Have Permission To Edit That"})
-    request.data["user"] = request.user.id
-    updated_profile = ProfileSerializer(instance=profile, data=request.data)
-    if updated_profile.is_valid():
-        updated_profile.save()
-        responseData = {
-            "msg" : "updated successefully"
-        }
-
-        return Response(responseData)
-    else:
-        print(updated_profile.errors)
-        return Response({"msg" : "bad request, cannot update"}, status=status.HTTP_400_BAD_REQUEST)
-
-@api_view(['DELETE'])
-@authentication_classes([JWTAuthentication])
-@permission_classes([IsAuthenticated])
-def test_delete_profile(request: Request, slug):
-    '''Delete profile by creator'''
-    profile = ProfileModel.objects.get(slug=slug)
-    user=request.user
-    if profile.user != user:
-        return Response({'response':"You Don't Have Permission To Delete That"})
-    if request.method == 'DELETE':
-       opration= profile.delete()
-       data={}
-    if opration:
-        data['success']="Deleted Successfully"
-    else:
-        data['faild']="Deleted failed"
-    return Response(data=data)
-
-
-
