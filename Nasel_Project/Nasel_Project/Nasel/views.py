@@ -265,7 +265,7 @@ def delete_Order(request: Request, Order_id):
 
 
 
-<<<<<<< HEAD
+
 # @api_view(['PUT'])
 # @authentication_classes([JWTAuthentication])
 # @permission_classes((IsAuthenticated,))
@@ -287,7 +287,7 @@ def delete_Order(request: Request, Order_id):
 #     else:
 #         print(updated_profile.errors)
 #         return Response({"msg" : "bad request, cannot update"}, status=status.HTTP_400_BAD_REQUEST)
-=======
+
 @api_view(['PUT'])
 @authentication_classes([JWTAuthentication])
 @permission_classes((IsAuthenticated,))
@@ -330,4 +330,3 @@ def test_delete_profile(request: Request, slug):
 
 
 
->>>>>>> 1008316066f2a40361d0463d28f864d23d1bd6c4

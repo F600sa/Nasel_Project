@@ -23,12 +23,10 @@ urlpatterns = [
     path("order/all", views.list_Order, name="list_Order"),
     path("order/update/<Order_id>", views.update_Order, name="update_Order"),
     #Test CRUD
-<<<<<<< HEAD
 
-=======
-    path("profilee/update/<slug>",views.update_profilee,name="update_profilee"),
-    path("profilee/delete/<slug>",views.test_delete_profile,name="test_delete_profile")
->>>>>>> 1008316066f2a40361d0463d28f864d23d1bd6c4
+    # path("profilee/update/<slug>",views.update_profilee,name="update_profilee"),
+    # path("profilee/delete/<slug>",views.test_delete_profile,name="test_delete_profile")
+
 
 
 ]
