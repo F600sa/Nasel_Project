@@ -3,6 +3,12 @@ from django.contrib.auth.models import User
 # Create your models here
 
 
+class ProfileModel (models.Model):
+    name = models.CharField(max_length=200)
+    image = models.URLField()
+    #slug = models.SlugField(unique=True)
+    user = models.OneToOneField(User,on_delete=models.CASCADE)
+
 
 
 class CommentModel (models.Model):
