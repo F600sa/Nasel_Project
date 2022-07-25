@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 class ProfileModel (models.Model):
     name = models.CharField(max_length=200)
     image = models.URLField()
-    slug = models.SlugField(unique=True)
+    #slug = models.SlugField(unique=True)
     user = models.OneToOneField(User,on_delete=models.CASCADE)
 
 

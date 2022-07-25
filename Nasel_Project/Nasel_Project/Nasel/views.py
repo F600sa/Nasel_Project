@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.contrib.auth.models import User
 from rest_framework.response import Response
 from rest_framework.request import Request
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
@@ -36,37 +37,33 @@ def add_profile(request: Request):
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])
 def update_profile(request: Request, profile_id):
-
-    if not request.user.is_authenticated or not request.user.has_perm('Nasel.delete_profilemodel'):
-        return Response("Not Allowed", status=status.HTTP_400_BAD_REQUEST)
+    if not request.user.is_authenticated or not request.user.has_perm('Nasel.change_ProfileModel'):
+        return Response("Not Allowed", status=status.HTTP_401_UNAUTHORIZED)
     request.data["user"] = request.user.id
     profile = ProfileModel.objects.get(id=profile_id)
-    updated_profile = ProfileSerializer(instance=profile, data=request.data)
-    if updated_profile.is_valid():
-        updated_profile.save()
+    updated_product = ProfileSerializer(instance=profile, data=request.data)
+    if updated_product.is_valid():
+        updated_product.save()
         responseData = {
             "msg": "updated successefully"
         }
 
         return Response(responseData)
     else:
-        print(updated_profile.errors)
+        print(updated_product.errors)
         return Response({"msg": "bad request, cannot update"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['DELETE'])
 @authentication_classes([JWTAuthentication])
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 def delete_profile(request: Request, profile_id):
-    '''
-        can only delete Admin and Developer
-    '''
-    if not request.user.is_authenticated or not request.user.has_perm('Nasel.delete_profilemodel'):
-        return Response("Not Allowed", status=status.HTTP_400_BAD_REQUEST)
-        request.data["user"] = request.user.id
-    profile = ProfileModel.objects.get(id=profile_id)
+    user:User=request.user
+    profile=ProfileModel.objects.get(id=profile_id)
+    if not user.is_authenticated or user != profile.user:
+        return Response({"msg":"Not Allowed"},status=status.HTTP_401_UNAUTHORIZED)
     profile.delete()
-    return Response({"msg": "Deleted Successfully"})
+    return Response({"msg":"Deleted Successfully"})
 
 
 
@@ -101,10 +98,10 @@ def delete_comment(request: Request, comment_id):
     '''
        all can delete a comment
     '''
-    if not request.user.is_authenticated:
-        return Response({"msg": "Not Allowed"}, status=status.HTTP_401_UNAUTHORIZED)
-    request.data["user"] = request.user.id
+    user: User = request.user
     comment = CommentModel.objects.get(id=comment_id)
+    if not user.is_authenticated or user != comment.user:
+        return Response({"msg": "Not Allowed"}, status=status.HTTP_401_UNAUTHORIZED)
     comment.delete()
     return Response({"msg": "Deleted Successfully"})
 
@@ -169,12 +166,11 @@ def add_Animal(request: Request):
 @api_view(['DELETE'])
 @authentication_classes([JWTAuthentication])
 def delete_Animal(request: Request, Animal_id):
-
-    if not request.user.is_authenticated:
+    user: User = request.user
+    Animal = AnimalModel.objects.get(id=Animal_id)
+    if not user.is_authenticated or user != Animal.user:
         return Response({"msg": "Not Allowed"}, status=status.HTTP_401_UNAUTHORIZED)
-    request.data["user"] = request.user.id
-    animal = AnimalModel.objects.get(id=Animal_id)
-    animal.delete()
+    Animal.delete()
     return Response({"msg": "Deleted Successfully"})
 
 @api_view(['GET'])
@@ -214,7 +210,6 @@ def update_Animal(request: Request, Animal_id):
 @api_view(['POST'])
 @authentication_classes([JWTAuthentication])
 def add_Order(request: Request):
-
     if not request.user.is_authenticated:
         return Response("Not Allowed", status=status.HTTP_400_BAD_REQUEST)
     request.data["user"] = request.user.id
@@ -261,34 +256,33 @@ def list_Order(request: Request):
 @api_view(['DELETE'])
 @authentication_classes([JWTAuthentication])
 def delete_Order(request: Request, Order_id):
-
-    if not request.user.is_authenticated:
-        return Response({"msg": "Not Allowed"}, status=status.HTTP_401_UNAUTHORIZED)
-    request.data["user"] = request.user.id
+    user: User = request.user
     order = OrderModel.objects.get(id=Order_id)
+    if not user.is_authenticated or user != order.user:
+        return Response({"msg": "Not Allowed"}, status=status.HTTP_401_UNAUTHORIZED)
     order.delete()
     return Response({"msg": "Deleted Successfully"})
 
 
 
-@api_view(['PUT'])
-@authentication_classes([JWTAuthentication])
-@permission_classes((IsAuthenticated,))
-def update_profilee(request : Request, slug):
-    '''update profile by creator'''
-    profile = ProfileModel.objects.get(slug=slug)###
-    user=request.user
-    if profile.user != user:
-        return Response({'response':"You Don't Have Permission To Edit That"})
-    request.data["user"] = request.user.id
-    updated_profile = ProfileSerializer(instance=profile, data=request.data)
-    if updated_profile.is_valid():
-        updated_profile.save()
-        responseData = {
-            "msg" : "updated successefully"
-        }
-
-        return Response(responseData)
-    else:
-        print(updated_profile.errors)
-        return Response({"msg" : "bad request, cannot update"}, status=status.HTTP_400_BAD_REQUEST)
+# @api_view(['PUT'])
+# @authentication_classes([JWTAuthentication])
+# @permission_classes((IsAuthenticated,))
+# def update_profilee(request : Request, slug):
+#     '''update profile by creator'''
+#     profile = ProfileModel.objects.get(slug=slug)###
+#     user=request.user
+#     if profile.user != user:
+#         return Response({'response':"You Don't Have Permission To Edit That"})
+#     request.data["user"] = request.user.id
+#     updated_profile = ProfileSerializer(instance=profile, data=request.data)
+#     if updated_profile.is_valid():
+#         updated_profile.save()
+#         responseData = {
+#             "msg" : "updated successefully"
+#         }
+#
+#         return Response(responseData)
+#     else:
+#         print(updated_profile.errors)
+#         return Response({"msg" : "bad request, cannot update"}, status=status.HTTP_400_BAD_REQUEST)
