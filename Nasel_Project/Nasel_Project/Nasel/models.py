@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db import IntegrityError
 # Create your models here
 
 
@@ -26,8 +27,8 @@ class ProfileModel (models.Model):
     name = models.CharField(max_length=200)
     image = models.URLField()
     bio = models.TextField()
+    #animal = models.ForeignKey(AnimalModel,on_delete=models.CASCADE,null=True)
     user = models.OneToOneField(User,on_delete=models.CASCADE)
-    animal = models.ForeignKey(AnimalModel,on_delete=models.CASCADE)
 
 class OrderModel (models.Model):
     Animal = models.ForeignKey(AnimalModel, on_delete=models.CASCADE)

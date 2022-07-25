@@ -14,9 +14,6 @@ from .models import ProfileModel,CommentModel,AnimalModel,OrderModel
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])
 def add_profile(request: Request):
-    '''
-    can only add Admin and Developer
-    '''
     if not request.user.is_authenticated or not request.user.has_perm('Nasel.add_profilemodel'):
         return Response({"msg": "Sorry, Not Allowed "}, status=status.HTTP_401_UNAUTHORIZED)
     request.data["user"] = request.user.id
@@ -82,6 +79,7 @@ def list_profile(request: Request):
         "Profile": ProfileSerializer(instance=profile, many=True).data
     }
     return Response(dataResponse)
+
 
 
 @api_view(['GET'])

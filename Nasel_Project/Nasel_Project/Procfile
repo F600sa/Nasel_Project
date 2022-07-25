@@ -1,1 +1,1 @@
-web: gunicorn Nasel_Project.wsgi --log-file -
+web gunicorn Nasel_Project.wsgi --log-file -
