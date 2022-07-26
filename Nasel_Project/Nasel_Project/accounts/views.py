@@ -37,4 +37,3 @@ def login_user(request: Request):
             return Response(responseData)
 
     return Response({"msg": "please provide your username & password"}, status=status.HTTP_401_UNAUTHORIZED)
-
