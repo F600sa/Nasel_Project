@@ -310,8 +310,8 @@ def my_profile(request: Request):
 def get_order(request: Request, order_id):
     Order = OrderModel.objects.filter(id=order_id)
     dataResponse = {
-        "msg": "List Animal",
-        "games": OrderSerializer(instance=Order, many=True).data}
+        "msg": "List Order",
+        "Order": OrderSerializer(instance=Order, many=True).data}
     return Response(dataResponse)
 
 
@@ -320,6 +320,6 @@ def get_order(request: Request, order_id):
 def my_order(request: Request):
     order = OrderModel.objects.filter(user=request.user.id)
     dataResponse = {
-        "msg": " my List Profile",
-        "Profile": OrderSerializerView(instance=order, many=True).data}
+        "msg": " my List Order",
+        "My Order": OrderSerializerView(instance=order, many=True).data}
     return Response(dataResponse)

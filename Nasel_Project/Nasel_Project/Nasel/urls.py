@@ -20,12 +20,14 @@ urlpatterns = [
     path("animal/all", views.list_Animal, name="list_animal"),
     path("animal/update/<Animal_id>", views.update_Animal, name="update_animal"),
     path("animal/get/<Animal_id>", views.get_animal, name="get_animal"),
-    path("animal/", views.my_animals, name="get_animal"),#####################
+    path("animal/", views.my_animals, name="get_animal"),
     # CRUD Order
     path("order/add", views.add_Order, name="add_Order"),
     path("order/delete/<Order_id>", views.delete_Order, name="delete_Order"),
     path("order/all", views.list_Order, name="list_Order"),
     path("order/update/<Order_id>", views.update_Order, name="update_Order"),
+    path("order/get/<order_id>", views.get_order, name="get_order"),
+    path("order/", views.my_order, name="my_order"),
 
 
 ]
