@@ -6,7 +6,7 @@ from rest_framework.decorators import api_view, authentication_classes, permissi
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
-from .serializers import ProfileSerializer, CommentSerializer,AnimalSerializer,OrderSerializer
+from .serializers import ProfileSerializer, CommentSerializer,AnimalSerializer,OrderSerializer , AnimalSerializerView,ProfileSerializerView,OrderSerializerView
 from .models import ProfileModel,CommentModel,AnimalModel,OrderModel
 
 
@@ -268,6 +268,58 @@ def delete_Order(request: Request, Order_id):
     return Response({"msg": "Deleted Successfully"})
 
 
+@api_view(['GET'])
+def get_animal(request: Request, Animal_id):
+    Animal = AnimalModel.objects.filter(id=Animal_id)
+    dataResponse = {
+        "msg": "List Animal",
+        "games": AnimalSerializer(instance=Animal, many=True).data}
+    return Response(dataResponse)
 
 
+@api_view(['GET'])
+@authentication_classes([JWTAuthentication])
+def my_animals(request: Request):
+    Animal = AnimalModel.objects.filter(user=request.user.id)
+    dataResponse = {
+        "msg": " my List Animal",
+        "games": AnimalSerializerView(instance=Animal, many=True).data}
+    return Response(dataResponse)
 
+
+@api_view(['GET'])
+def get_profile(request: Request, Profile_id):
+    Profile = AnimalModel.objects.filter(id=Profile_id)
+    dataResponse = {
+        "msg": "List Animal",
+        "games": ProfileSerializer(instance=Profile, many=True).data}
+    return Response(dataResponse)
+
+
+@api_view(['GET'])
+@authentication_classes([JWTAuthentication])
+def my_profile(request: Request):
+    profile = ProfileModel.objects.filter(user=request.user.id)
+    dataResponse = {
+        "msg": " my List Profile",
+        "Profile": ProfileSerializerView(instance=profile, many=True).data}
+    return Response(dataResponse)
+
+
+@api_view(['GET'])
+def get_order(request: Request, order_id):
+    Order = OrderModel.objects.filter(id=order_id)
+    dataResponse = {
+        "msg": "List Animal",
+        "games": OrderSerializer(instance=Order, many=True).data}
+    return Response(dataResponse)
+
+
+@api_view(['GET'])
+@authentication_classes([JWTAuthentication])
+def my_order(request: Request):
+    order = OrderModel.objects.filter(user=request.user.id)
+    dataResponse = {
+        "msg": " my List Profile",
+        "Profile": OrderSerializerView(instance=order, many=True).data}
+    return Response(dataResponse)

@@ -7,6 +7,11 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = ProfileModel
         fields = '__all__'
 
+class ProfileSerializerView(serializers.ModelSerializer):
+    class Meta:
+        model = ProfileModel
+        fields = '__all__'
+
 
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
@@ -18,7 +23,17 @@ class AnimalSerializer(serializers.ModelSerializer):
         model = AnimalModel
         fields = '__all__'
 
+class AnimalSerializerView(serializers.ModelSerializer):
+    class Meta:
+        model = AnimalModel
+        fields = '__all__'
+
 class OrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OrderModel
+        fields = '__all__'
+
+class OrderSerializerView(serializers.ModelSerializer):
     class Meta:
         model = OrderModel
         fields = '__all__'

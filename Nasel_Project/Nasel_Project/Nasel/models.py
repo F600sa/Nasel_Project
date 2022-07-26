@@ -27,7 +27,7 @@ class ProfileModel (models.Model):
     name = models.CharField(max_length=200)
     image = models.URLField()
     bio = models.TextField()
-    #animal = models.ForeignKey(AnimalModel,on_delete=models.CASCADE,null=True)
+    animal = models.ForeignKey(AnimalModel,on_delete=models.CASCADE,null=True)
     user = models.OneToOneField(User,on_delete=models.CASCADE)
 
 class OrderModel (models.Model):
