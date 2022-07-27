@@ -16,7 +16,7 @@ class commentAdmin(admin.ModelAdmin):
     date_hierarchy = 'created_at'
 
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('Animal','user')
+    list_display = ('user',)
     date_hierarchy = 'date'
 
 
